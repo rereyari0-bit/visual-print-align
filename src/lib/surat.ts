@@ -72,8 +72,8 @@ export const initialLetterData: LetterData = {
 
 const ROMAWI = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"];
 const BULAN_ID = [
-  "Januari", "Pebruari", "Maret", "April", "Mei", "Juni",
-  "Juli", "Agustus", "September", "Oktober", "Nopember", "Desember",
+  "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+  "Juli", "Agustus", "September", "Oktober", "November", "Desember",
 ];
 
 function parseIssueDate(value: string) {
