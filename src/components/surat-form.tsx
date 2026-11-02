@@ -9,7 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { useIsAdmin } from "@/hooks/use-is-admin";
 import { supabase } from "@/integrations/supabase/client";
-import { buildNumber, hariDari, hydrateLetterData, initialLetterData, newLetterDataFromLatest, type LetterData, type Personel } from "@/lib/surat";
+import { buildNumber, hariDari, hydrateLetterData, initialLetterData, newLetterDataFromLatest, withDefaultLetterDates, type LetterData, type Personel } from "@/lib/surat";
 
 const adminOnly: Array<keyof LetterData> = ["agency","region","resort","duties","city","authority","office","signer","signerRank"];
 const fields: Array<{ key: keyof LetterData; label: string; multiline?: boolean; hint?: string }> = [
@@ -52,7 +52,7 @@ export function SuratForm({ id }: { id?: string }) {
         setSelectedNrp(letter.data.penerima_nrp ?? []);
       } else if (id) setError("Surat tidak ditemukan atau tidak dapat dibuka.");
       else {
-        setData(newLetterDataFromLatest(letter.data?.data));
+        setData(withDefaultLetterDates(newLetterDataFromLatest(letter.data?.data)));
         setSelectedNrp([]);
         if (letter.error) setError("Isian surat terakhir gagal dimuat. Isian awal digunakan; silakan periksa sebelum menyimpan.");
       }
