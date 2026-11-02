@@ -16,6 +16,14 @@ describe("kalimat waktu pelaksanaan tugas", () => {
     const waktu = buildWaktu({ ...initialLetterData, startDate: "2026-11-01", startTime: "06:00", endDate: "", endTime: "" });
     expect(waktu).toBe("hari Minggu tanggal 1 November 2026 pukul 06.00 WIB");
   });
+  test("tanggal mulai sama dengan selesai memakai rentang s.d.", () => {
+    const waktu = buildWaktu({
+      ...initialLetterData,
+      startDay: "Senin", startDate: "2026-11-02", startTime: "06:00",
+      endDay: "Senin", endDate: "2026-11-02", endTime: "16:00",
+    });
+    expect(waktu).toBe("hari Senin tanggal 2 November 2026 pukul 06.00 s.d. 16.00 WIB");
+  });
   test("tanpa waktu apa pun menghasilkan teks kosong", () => {
     expect(buildWaktu(initialLetterData)).toBe("");
   });

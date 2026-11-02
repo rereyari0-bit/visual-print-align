@@ -149,14 +149,23 @@ export function hariDari(value: string) {
   return HARI_ID[new Date(p.year, p.month - 1, p.day).getDay()] ?? "";
 }
 export function buildWaktu(d: LetterData) {
-  const part = (day: string, date: string, time: string) => {
+  const head = (day: string, date: string) => {
     const hari = day || hariDari(date);
     const tanggal = date ? formatTanggal(date) : "";
-    const pukul = time ? `pukul ${time.replace(":", ".")} WIB` : "";
-    return [hari ? `hari ${hari}` : "", tanggal ? `tanggal ${tanggal}` : "", pukul].filter(Boolean).join(" ");
+    return [hari ? `hari ${hari}` : "", tanggal ? `tanggal ${tanggal}` : ""].filter(Boolean).join(" ");
   };
-  const a = part(d.startDay ?? "", d.startDate ?? "", d.startTime ?? "");
-  const b = part(d.endDay ?? "", d.endDate ?? "", d.endTime ?? "");
+  const pukul = (time: string) => (time ? `pukul ${time.replace(":", ".")} WIB` : "");
+  const startDate = d.startDate ?? "";
+  if (startDate && startDate === (d.endDate ?? "")) {
+    const a = head(d.startDay ?? "", startDate);
+    if (!a) return "";
+    const jamA = (d.startTime ?? "").replace(":", ".");
+    const jamB = (d.endTime ?? "").replace(":", ".");
+    const rentang = jamA && jamB ? `pukul ${jamA} s.d. ${jamB} WIB` : pukul(d.startTime ?? "");
+    return [a, rentang].filter(Boolean).join(" ");
+  }
+  const a = [head(d.startDay ?? "", d.startDate ?? ""), pukul(d.startTime ?? "")].filter(Boolean).join(" ");
+  const b = [head(d.endDay ?? "", d.endDate ?? ""), pukul(d.endTime ?? "")].filter(Boolean).join(" ");
   if (!a && !b) return "";
   return b ? `${a} sampai dengan ${b}` : a;
 }
