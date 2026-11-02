@@ -13,7 +13,7 @@ describe("isian awal dari surat terakhir", () => {
   });
   test("preserves empty saved values and falls back for missing or invalid fields", () => {
     expect(newLetterDataFromLatest({ city: "", bases: null, signer: 42 }))
-      .toEqual({ ...initialLetterData, city: "" });
+      .toEqual({ ...initialLetterData, city: "", numberSequence: "" });
     for (const value of [null, undefined, [], "invalid"]) {
       expect(newLetterDataFromLatest(value)).toEqual(initialLetterData);
     }
