@@ -118,6 +118,28 @@ export function newLetterDataFromLatest(value: unknown): LetterData {
   return data;
 }
 
+const pad2 = (value: number) => String(value).padStart(2, "0");
+export const todayIso = () => {
+  const now = new Date();
+  return `${now.getFullYear()}-${pad2(now.getMonth() + 1)}-${pad2(now.getDate())}`;
+};
+
+export function withDefaultLetterDates(data: LetterData): LetterData {
+  const today = todayIso();
+  const startDate = data.startDate || today;
+  const endDate = data.endDate || today;
+  return {
+    ...data,
+    issueDate: today,
+    startDate,
+    endDate,
+    startTime: data.startTime || "00:00",
+    endTime: data.endTime || "00:00",
+    startDay: hariDari(startDate),
+    endDay: hariDari(endDate),
+  };
+}
+
 export const splitLines = (value: string) =>
   (value ?? "").split("\n").filter((line) => line.trim());
 const HARI_ID = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
