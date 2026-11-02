@@ -9,13 +9,13 @@ describe("isian awal dari surat terakhir", () => {
       signerRank: "Pangkat terakhir", copyTo: "Tembusan terakhir",
     };
     expect(newLetterDataFromLatest({ ...inherited, tugas: "Jangan salin", startDate: "2026-10-13", numberSequence: "9999" }))
-      .toEqual({ ...initialLetterData, ...inherited });
+      .toEqual({ ...initialLetterData, ...inherited, numberSequence: "" });
   });
   test("preserves empty saved values and falls back for missing or invalid fields", () => {
     expect(newLetterDataFromLatest({ city: "", bases: null, signer: 42 }))
-      .toEqual({ ...initialLetterData, city: "" });
+      .toEqual({ ...initialLetterData, city: "", numberSequence: "" });
     for (const value of [null, undefined, [], "invalid"]) {
-      expect(newLetterDataFromLatest(value)).toEqual(initialLetterData);
+      expect(newLetterDataFromLatest(value)).toEqual({ ...initialLetterData, numberSequence: "" });
     }
   });
   test("new-letter fields remain editable without mutating defaults or saved data", () => {

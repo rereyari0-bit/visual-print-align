@@ -109,6 +109,8 @@ const inheritedFields = ["bases", "duties", "city", "authority", "office", "sign
 
 export function newLetterDataFromLatest(value: unknown): LetterData {
   const data = { ...initialLetterData };
+  // Surat baru memulai nomor urut kosong; admin mengisi sendiri.
+  data.numberSequence = "";
   if (!value || typeof value !== "object" || Array.isArray(value)) return data;
   const latest = value as Record<string, unknown>;
   for (const key of inheritedFields) {
