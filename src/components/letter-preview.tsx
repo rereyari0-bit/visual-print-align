@@ -17,7 +17,7 @@ export function LetterPreview({ data, recipients }: { data: LetterData; recipien
         <DocumentRow label="Dasar"><ol className="document-list">{splitLines(data.bases).map((item, index) => <li key={`${item}-${index}`}>{item}</li>)}</ol></DocumentRow>
         <p className="command-title">DIPERINTAHKAN</p>
         <DocumentRow label="Kepada"><ol className="document-list recipients">{recipients.map((p) => <li key={p.nrp}><span className="recipient-name">{p.pangkat} {p.nama} NRP {p.nrp}</span><span className="recipient-role">{p.jabatan}</span></li>)}</ol></DocumentRow>
-        <DocumentRow label="Untuk"><ol className="document-list duties">{activity ? <li>disamping melaksanakan tugas dan jabatan sehari-hari agar melaksanakan kegiatan {activity}{buildWaktu(data) ? `, pada hari ${buildWaktu(data)}` : ""};</li> : null}{splitLines(data.duties).map((item, index) => <li key={`${item}-${index}`}>{item}</li>)}</ol></DocumentRow>
+        <DocumentRow label="Untuk"><ol className="document-list duties">{activity ? <li>disamping melaksanakan tugas dan jabatan sehari-hari agar melaksanakan kegiatan {activity}{buildWaktu(data) ? `, pada ${buildWaktu(data)}` : ""};</li> : null}{splitLines(data.duties).map((item, index) => <li key={`${item}-${index}`}>{item}</li>)}</ol></DocumentRow>
         <p className="finished">Selesai.</p>
         <div className="signature-block">
           <div className="signature-meta"><span>Dikeluarkan di</span><b>:</b><span className="signature-city">{`${" ".repeat(15)}${data.city}`}</span><span>Pada tanggal</span><b>:</b><span className="signature-date">{formatTanggal(data.issueDate).replace(/^(\S+) (\S+) (\S+)$/, (_m, d, mo, y) => `${d}${" ".repeat(20)}${mo}${" ".repeat(10)}${y}`)}</span></div>

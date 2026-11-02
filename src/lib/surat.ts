@@ -149,8 +149,12 @@ export function hariDari(value: string) {
   return HARI_ID[new Date(p.year, p.month - 1, p.day).getDay()] ?? "";
 }
 export function buildWaktu(d: LetterData) {
-  const part = (day: string, date: string, time: string) =>
-    [day || hariDari(date), date ? formatTanggal(date) : "", time ? `pukul ${time.replace(":", ".")} WIB` : ""].filter(Boolean).join(", ");
+  const part = (day: string, date: string, time: string) => {
+    const hari = day || hariDari(date);
+    const tanggal = date ? formatTanggal(date) : "";
+    const pukul = time ? `pukul ${time.replace(":", ".")} WIB` : "";
+    return [hari ? `hari ${hari}` : "", tanggal ? `tanggal ${tanggal}` : "", pukul].filter(Boolean).join(" ");
+  };
   const a = part(d.startDay ?? "", d.startDate ?? "", d.startTime ?? "");
   const b = part(d.endDay ?? "", d.endDate ?? "", d.endTime ?? "");
   if (!a && !b) return "";
