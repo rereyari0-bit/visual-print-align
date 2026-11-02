@@ -15,7 +15,7 @@ describe("isian awal dari surat terakhir", () => {
     expect(newLetterDataFromLatest({ city: "", bases: null, signer: 42 }))
       .toEqual({ ...initialLetterData, city: "", numberSequence: "" });
     for (const value of [null, undefined, [], "invalid"]) {
-      expect(newLetterDataFromLatest(value)).toEqual(initialLetterData);
+      expect(newLetterDataFromLatest(value)).toEqual({ ...initialLetterData, numberSequence: "" });
     }
   });
   test("new-letter fields remain editable without mutating defaults or saved data", () => {
