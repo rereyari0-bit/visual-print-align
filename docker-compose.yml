@@ -1,26 +1,77 @@
+version: '3.8'
+
+networks:
+  supabase_network:
+    driver: bridge
+
 services:
-  app:
+  # 1. Supabase Database (PostgreSQL + PostgREST extensions)
+  supabase_db:
+    image: supabase/postgres:15.1.1.78
+    container_name: supabase_db_local
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: lovable_db_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - supabase_db_data:/var/lib/postgresql/data
+    networks:
+      - supabase_network
+
+  # 2. GoTrue (Supabase Auth Service untuk penanganan Login)
+  supabase_auth:
+    image: supabase/gotrue:v2.144.0
+    container_name: supabase_auth_local
+    restart: always
+    environment:
+      GOTRUE_API_HOST: 0.0.0.0
+      GOTRUE_API_PORT: 9999
+      GOTRUE_DB_DRIVER: postgres
+      GOTRUE_DB_DATABASE_URL: postgres://postgres:lovable_db_password@supabase_db:5432/postgres?sslmode=disable
+      GOTRUE_JWT_SECRET: super-secret-jwt-token-key-minimal-40-karakter-bebas
+      GOTRUE_JWT_EXP: 3600
+      GOTRUE_SITE_URL: http://localhost:8080
+    ports:
+      - "9999:9999"
+    depends_on:
+      - supabase_db
+    networks:
+      - supabase_network
+
+  # 3. Supabase Studio (Dashboard lokal mirip Supabase Cloud)
+  supabase_studio:
+    image: supabase/studio:20240115-779d717
+    container_name: supabase_studio_local
+    restart: always
+    environment:
+      STUDIO_PG_META_URL: http://supabase_db:5432
+      SUPABASE_URL: http://localhost:8000
+    ports:
+      - "8000:3000"
+    networks:
+      - supabase_network
+
+  # 4. Frontend App (Aplikasi Lovable Anda)
+  frontend_app:
     build:
       context: .
       dockerfile: Dockerfile
-      args:
-        # VITE_* di-inline saat `vite build` (lihat src/integrations/supabase/client.ts)
-        VITE_SUPABASE_URL: ${VITE_SUPABASE_URL}
-        VITE_SUPABASE_PUBLISHABLE_KEY: ${VITE_SUPABASE_PUBLISHABLE_KEY}
-        VITE_SUPABASE_PROJECT_ID: ${VITE_SUPABASE_PROJECT_ID}
+    container_name: lovable_frontend
+    restart: always
     ports:
-      - "${PORT:-3000}:3000"
-    env_file:
-      - .env
+      - "8080:80"
     environment:
-      NODE_ENV: production
-      HOST: 0.0.0.0
-      PORT: 3000
-      SUPABASE_URL: ${SUPABASE_URL}
-      SUPABASE_PUBLISHABLE_KEY: ${SUPABASE_PUBLISHABLE_KEY}
-      SUPABASE_PROJECT_ID: ${SUPABASE_PROJECT_ID}
-      SUPABASE_SERVICE_ROLE_KEY: ${SUPABASE_SERVICE_ROLE_KEY:-}
-    extra_hosts:
-      # Supabase lokal di host: pakai http://host.docker.internal:54321, bukan 127.0.0.1
-      - "host.docker.internal:host-gateway"
-    restart: unless-stopped
+      # Mengisi variabel lingkungan yang diminta saat login aplikasi Lovable
+      - VITE_SUPABASE_URL=http://<10.10.30.32>:8000
+      - VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyAgCiAgICAicm9sZSI6ICJhbm9uIiwKICAgICJpc3MiOiAic3VwYWJhc2UiLAogICAgImlhdCI6IDE2NDI1NDY4MDAsCiAgICAiZXhwIjogMTgwMDMxMzIwMAp9.vHLHejsLJMwyYuLre-XDN3HK-N17HqhwOqrH5jHxmy8
+      - SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyAgCiAgICAicm9sZSI6ICJzZXJ2aWNlX3JvbGUiLAogICAgImlzcyI6ICJzdXBhYmFzZSIsCiAgICAiaWF0IjogMTxNDI1NDY4MDAsCiAgICAiZXhwIjogMTgwMDMxMzIwMAp9.za0knzqNW8R04rHT6MQ8S9SCSpelJfjz4dR5qdA6KJo
+    depends_on:
+      - supabase_db
+      - supabase_auth
+    networks:
+      - supabase_network
+
+volumes:
+  supabase_db_data:
+    driver: local
