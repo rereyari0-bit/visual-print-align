@@ -41,7 +41,7 @@ services:
 
   # 3. Supabase Studio (Dashboard lokal mirip Supabase Cloud)
   supabase_studio:
-    image: supabase/studio:20240115-779d717
+    image: supabase/studio:latest
     container_name: supabase_studio_local
     restart: always
     environment:
