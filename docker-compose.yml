@@ -31,7 +31,7 @@ services:
       GOTRUE_DB_DATABASE_URL: postgres://postgres:lovable_db_password@supabase_db:5432/postgres?sslmode=disable
       GOTRUE_JWT_SECRET: super-secret-jwt-token-key-minimal-40-karakter-bebas
       GOTRUE_JWT_EXP: 3600
-      GOTRUE_SITE_URL: http://localhost:8080
+      GOTRUE_SITE_URL: http://10.10.30.32:8080
     ports:
       - "9999:9999"
     depends_on:
@@ -41,12 +41,12 @@ services:
 
   # 3. Supabase Studio (Dashboard lokal mirip Supabase Cloud)
   supabase_studio:
-    image: supabase/studio:20240115-779d717
+    image: supabase/studio:latest
     container_name: supabase_studio_local
     restart: always
     environment:
       STUDIO_PG_META_URL: http://supabase_db:5432
-      SUPABASE_URL: http://localhost:8000
+      SUPABASE_URL: http://10.10.30.32:8000
     ports:
       - "8000:3000"
     networks:
@@ -63,7 +63,7 @@ services:
       - "8080:80"
     environment:
       # Mengisi variabel lingkungan yang diminta saat login aplikasi Lovable
-      - VITE_SUPABASE_URL=http://<10.10.30.32>:8000
+      - VITE_SUPABASE_URL=http://10.10.30.32:8000
       - VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyAgCiAgICAicm9sZSI6ICJhbm9uIiwKICAgICJpc3MiOiAic3VwYWJhc2UiLAogICAgImlhdCI6IDE2NDI1NDY4MDAsCiAgICAiZXhwIjogMTgwMDMxMzIwMAp9.vHLHejsLJMwyYuLre-XDN3HK-N17HqhwOqrH5jHxmy8
       - SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyAgCiAgICAicm9sZSI6ICJzZXJ2aWNlX3JvbGUiLAogICAgImlzcyI6ICJzdXBhYmFzZSIsCiAgICAiaWF0IjogMTxNDI1NDY4MDAsCiAgICAiZXhwIjogMTgwMDMxMzIwMAp9.za0knzqNW8R04rHT6MQ8S9SCSpelJfjz4dR5qdA6KJo
     depends_on:
