@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import tribrataLogo from "@/assets/tribrata.png.asset.json";
+import tribrataLogo from "@/assets/tribrata.png";
 
 import { buildNumber, buildWaktu, formatTanggal, splitLines, type LetterData, type Personel } from "@/lib/surat";
 
@@ -11,7 +11,7 @@ export function LetterPreview({ data, recipients }: { data: LetterData; recipien
   return (
     <article className="print-sheet mx-auto bg-paper text-document shadow-paper">
       <header className="letterhead"><div>{data.agency}</div><div>{data.region}</div><div className="letterhead-rule">{data.resort}</div></header>
-      <div className="document-title"><img className="document-logo" src={tribrataLogo.url} alt="Logo Tribrata" /><div className="document-title-inner"><h2>SURAT PERINTAH</h2><p>Nomor : {buildNumber(data)}</p></div></div>
+      <div className="document-title"><img className="document-logo" src={tribrataLogo} alt="Logo Tribrata" /><div className="document-title-inner"><h2>SURAT PERINTAH</h2><p>Nomor : {buildNumber(data)}</p></div></div>
       <div className="document-body">
         <DocumentRow label="Pertimbangan"><p>{pertimbangan}</p></DocumentRow>
         <DocumentRow label="Dasar"><ol className="document-list">{splitLines(data.bases).map((item, index) => <li key={`${item}-${index}`}>{item}</li>)}</ol></DocumentRow>
