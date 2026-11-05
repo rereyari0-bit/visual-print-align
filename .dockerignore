@@ -1,0 +1,11 @@
+node_modules
+dist
+.output
+.wrangler
+.git
+.github
+.lovable
+.env
+.env.*
+npm-debug.log
+bun.lockb
