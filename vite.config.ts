@@ -13,5 +13,10 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  // Pin build output to dist/ so self-hosted Docker builds match docker/server.mjs.
+  nitro: {
+    preset: "cloudflare-module",
+    output: { dir: "dist", serverDir: "dist/server", publicDir: "dist/client" },
+  },
   vite: { plugins: [mcpPlugin()] },
 });
