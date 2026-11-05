@@ -282,3 +282,7 @@ CREATE POLICY "Surat diubah personil aktif" ON public.surat_perintah FOR UPDATE 
 
 REVOKE ALL ON public.personel FROM anon;
 REVOKE ALL ON public.surat_perintah FROM anon;
+-- ===== Data awal personel =====
+INSERT INTO public.personel (nrp,nama,pangkat,jabatan,email,kriteria,status) VALUES ('85020332','IREYNA','AKP','KASAT INTELKAM','rereyari0@gmail.com','admin','aktif') ON CONFLICT (nrp) DO NOTHING;
+INSERT INTO public.personel (nrp,nama,pangkat,jabatan,email,kriteria,status) VALUES ('84020332','DINI','BRIPKA','BAMIN','arifinsitubondo560@gmail.com','maintenance','aktif') ON CONFLICT (nrp) DO NOTHING;
+INSERT INTO public.personel (nrp,nama,pangkat,jabatan,email,kriteria,status) VALUES ('75020332','ARIFIN, S.H.','IPDA','KAURBINOPSNAL SATINTELKAM','arifgkidul57@gmail.com','user','aktif') ON CONFLICT (nrp) DO NOTHING;
