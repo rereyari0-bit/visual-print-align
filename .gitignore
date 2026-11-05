@@ -30,3 +30,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Homelab secrets — JANGAN di-commit!
+docker/.env.homelab.keys
+docker/supabase-homelab.env
+.env.homelab.keys
+.env.homelab

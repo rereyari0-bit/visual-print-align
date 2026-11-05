@@ -4,15 +4,20 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        # Alamat backend yang bisa diakses browser pengguna (IP homelab)
-        VITE_SUPABASE_URL: http://${HOMELAB_IP:-localhost}:8000
+        # Alamat backend yang bisa diakses browser pengguna (IP Docker homelab)
+        VITE_SUPABASE_URL: http://10.10.30.32:8000
         VITE_SUPABASE_PUBLISHABLE_KEY: ${SUPABASE_ANON_KEY}
+        VITE_SUPABASE_PROJECT_ID: homelab
     container_name: surat_perintah_web
     restart: unless-stopped
     ports:
       - "3000:3000"
     environment:
       PORT: "3000"
-      SUPABASE_URL: http://${HOMELAB_IP:-localhost}:8000
+      # SSR server-side — pakai nama service jika Supabase satu stack, atau IP jika beda stack
+      SUPABASE_URL: http://10.10.30.32:8000
       SUPABASE_PUBLISHABLE_KEY: ${SUPABASE_ANON_KEY}
       SUPABASE_SERVICE_ROLE_KEY: ${SUPABASE_SERVICE_ROLE_KEY}
+    extra_hosts:
+      # Pastikan container bisa resolve IP host jika Supabase berjalan di host yang sama
+      - "host.docker.internal:host-gateway"
