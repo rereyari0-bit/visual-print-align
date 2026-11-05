@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import tribrataLogo from "@/assets/tribrata.png.asset.json";
+import tribrataLogo from "@/assets/tribrata.png";
 
 import { buildNumber, buildWaktu, formatTanggal, splitLines, type LetterData, type Personel } from "@/lib/surat";
 
